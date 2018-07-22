@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>事件修饰符</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style>
+        .inner{
+            height: 150px;
+            background-color: tomato;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="inner" @click.capture = "divClick">
+            <!-- 使用 .stop 阻止冒泡,即父类容器的事件发生 -->
+            <input type="button" value="按他1" @click.stop="btnClick">
+            <!-- .prevent 阻止默认行为 -->
+            <a href="http://www.baidu.com" @click.prevent.stop = "linkClick">百度</a>
+            <!-- .capture 先执行父类的事件  在执行自己的事件 -->
+            <input type="button" value="按他2" @click="btnClick">
+            <!-- .once 触发事件只发生一次,前面的限制属性也只触发一次 -->
+            <a href="http://www.baidu.com" @click.prevent.stop.once = "linkClick">百度</a>
+        </div>
+            <!-- .self 只有点击本身才会触发事件, 冒泡事件和捕获事件都不发生 -->
+            <!-- 
+                .self 和 .stop 的区别
+                .stop 会阻止冒泡
+                .self 只会阻止自己冒泡行为 其他的冒泡不受影响
+            -->
+    </div>
+    <script>
+        var vm = new Vue({
+            el : "#app",
+            data : {},
+            methods : {
+                divClick : function(){
+                    console.log("触发 inner div的点击事件");
+                },
+                btnClick : function(){
+                    console.log("触发 btn 点击事件");
+                },
+                linkClick : function(){
+                    console.log("触发 linkClick 点击事件");
+                }
+            },
+        })
+    </script>
+</body>
+</html>
