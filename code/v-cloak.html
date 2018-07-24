@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+         <!-- v-cloak 能够解决插值表达式闪烁问题-->
+        <p v-cloak>{{msg}}</p>
+        <h4 v-text="msg"></h4>
+        <!-- 
+            v-text      没有闪烁问题 会覆盖元素中原本的内容
+            插值表达式  不会覆盖元素中原本的值
+         -->
+         <div>{{msg2}}</div>
+         <div v-text="msg2"></div>
+         <div v-html="msg2"></div>
+
+         <input type="button" value="按钮1" v-bind:title="mytitle +'123'">
+         <input type="button" value="按钮2" :title="mytitle +'123'" v-on:click="show">
+         <input type="button" value="按钮3" :title="mytitle +'123'" @click="show">
+    </div>
+
+
+    <script>
+        var vm = new Vue({
+            el   : "#app",
+            data : {
+                msg : "123",
+                msg2 : "<h1>我是h1我很大</h1>",
+                mytitle : "这是自己定义的title",
+            },
+            methods : {     //methods中定义了当前vue实例所有可以用的方法
+                show : function(){
+                    alert("hello")
+                },
+            }
+        })   
+        
+        
+    </script>
+</body>
+</html>

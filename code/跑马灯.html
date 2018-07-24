@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="浪起来" @click="gogogo">
+        <input type="button" value="低调" @click="stop">
+        <h4>{{msg}}</h4>
+    </div>
+    <script>
+        // 在vm实例中如果想要调用data中的数据，或则是methods中的方法，
+        // 必须通过this.数据属性名  或 this.方法名
+        // 这里的this 就代表我们new 出来的vm 实例
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "别浪~~！猥琐发育~",
+                intervalId: null
+            },
+            methods: {
+                gogogo: function () {
+                    // 设置一个定时器
+                    //var _this = this; // this指向问题
+                    if (this.intervalId != null) {
+                        return
+                    }
+
+                    this.intervalId = setInterval(() => {
+                        // 获取第一个字符
+                        var start = this.msg.substring(0, 1);
+                        // 获取剩下的全部字符 除 第一个
+                        var end = this.msg.substring(1);
+                        this.msg = end + start;
+                    }, 400)
+
+
+                },
+                stop: function () {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

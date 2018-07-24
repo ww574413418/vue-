@@ -50,7 +50,8 @@
                 <tr v-for="item in search(keyWords)" :key="item.id">
                     <td>{{ item.Id }}</td>
                     <td>{{ item.Name }}</td>
-                    <td>{{ item.Time }}</td>
+                    <!-- 使用过滤器 格式化日期格式 -->
+                    <td>{{ item.Time | dateFormat("") | msg}}</td>
                     <td>
                         <a href="" @click.prevent="del(item.Id)">删除</a>
                     </td>
@@ -60,13 +61,42 @@
 
     </div>
 
+
+    <div id="app2">
+        {{ date | dateFormat("yyyy-mm-dd") }}
+    </div>
     <script>
+
+        // 过滤器  方法第一个参数永远都是过滤器管道符号|前面的值
+        Vue.filter("dateFormat", function (date, pattern) {
+            // 根据给定的时间字符串得到特定的时间
+            var dt = new Date(date);
+            var year = dt.getFullYear();
+            var mon = dt.getMonth() + 1;
+            var day = dt.getDate();
+            //return year +"-"+ mon + "-" +day;
+            // 判断 pattern 是否是undefined
+            if (pattern && pattern.toLowerCase() == "yyyy-mm-dd") {
+                return `${year}-${mon}-${day}`;
+            } else {
+                var hour = dt.getHours();
+                var min = dt.getMinutes();
+                var ss = dt.getSeconds();
+                return `${year}-${mon}-${day}:${hour}:${min}:${ss}`;
+            }
+        })
+
+        // 过滤器  方法第一个参数永远都是过滤器管道符号|前面的值
+        Vue.filter("msg", function (date) {
+            return date + "";
+        })
+
         var vm = new Vue({
             el: "#app",
             data: {
                 Id: "",
                 Name: "",
-                keyWords : "",
+                keyWords: "",
                 list: [
                     { Id: 1, Name: "奔驰", Time: new Date() },
                     { Id: 2, Name: "宝马", Time: new Date() },
@@ -93,17 +123,60 @@
                         }
                     })
                 },
-                search : function(keyWords){
+                search: function (keyWords) {
+                    /* 
+                    第一种方法:
                     var newList = [];
                     this.list.forEach(item => {
                         if(item.Name.indexOf(keyWords) != -1){
                             newList.push(item);
                         }
                     });
+                    return newList; 
+                    */
+                    // 注意 foreach some filter findIndex 都会对数组中的每一项就行遍历
+                    var newList = this.list.filter(item => {
+                        if (item.Name.includes(keyWords)) {
+                            return item;
+                        }
+                    })
                     return newList;
                 }
             },
         })
+
+
+
+        var vm2 = new Vue({
+            el: "#app2",
+            data: {
+                date: new Date(),
+            },
+            methods: {
+
+            },
+            // 私有过滤器
+            filters: {
+                dateFormat : function (date,pattern) {
+                    // 根据给定的时间字符串得到特定的时间
+                    var dt = new Date(date);
+                    var year = dt.getFullYear();
+                    var mon = (dt.getMonth() + 1).toString().padStart(2,"0");
+                    var day = (dt.getDate()).toString().padStart(2,"0");
+                    //return year +"-"+ mon + "-" +day;
+                    // 判断 pattern 是否是undefined
+                    if (pattern && pattern.toLowerCase() == "yyyy-mm-dd") {
+                        return `${year}-${mon}-${day}`;
+                    } else {
+                        var hour = (dt.getHours()).toString().padStart(2,"0");
+                        var min = (dt.getMinutes()).toString().padStart(2,"0");
+                        var ss = (dt.getSeconds()).toString().padStart(2,"0");
+                        return `${year}-${mon}-${day}:${hour}:${min}:${ss}`;
+                    }
+                }
+            }
+        })
+
     </script>
 </body>
 

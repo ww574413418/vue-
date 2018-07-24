@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <style>
+        .inner {
+            height: 150px;
+            background-color: fuchsia;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="inner" @click="divClick">
+            <!-- .stop 阻止冒泡事件 -->
+            <input type="button" value="点按" @click.stop="btnClick">
+            <!-- .prevent 阻止默认事件 -->
+            <a href="http://www.baidu.com" @click.prevent="linkClick">baidu</a>
+        </div>
+        <hr>
+        <!-- .capture 先触发外层事件再触发内层事件 -->
+        <div class="inner" @click.capture="divClick">
+            <h3>.capture 先触发外层事件再触发内层事件</h3>
+            <!-- .stop 阻止冒泡事件 -->
+            <input type="button" value="点按" @click="btnClick">
+            <!-- .prevent 阻止默认事件 -->
+            <a href="http://www.baidu.com" @click.prevent="linkClick">baidu</a>
+        </div>
+        <hr>
+        <!-- .self 只有点击本元素才会触发 捕获和冒泡都不出发事件 -->
+        <div class="inner" @click.self="divClick">
+                <h3>.self 只有点击本元素才会触发 捕获和冒泡都不出发事件</h3>
+            <!-- .stop 阻止冒泡事件 -->
+            <input type="button" value="点按" @click="btnClick">
+            <!-- .prevent 阻止默认事件 -->
+            <a href="http://www.baidu.com" @click.prevent="linkClick">baidu</a>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {},
+            methods: {
+                divClick: function () {
+                    console.log("出发innerdiv的点击事件");
+                },
+                btnClick: function () {
+                    console.log("出发btn的点击事件");
+                },
+                linkClick: function () {
+                    console.log("出发link的点击事件");
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
