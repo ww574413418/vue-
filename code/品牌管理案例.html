@@ -32,7 +32,7 @@
 
                 <label>
                     搜索 :
-                    <input type="text" class="form-control" v-model="keyWords" @keyup.enter="search">
+                    <input type="text" class="form-control" v-model="keyWords" @keyup.enter="search" v-focous v-color="'blue'">
                 </label>
             </div>
         </div>
@@ -62,12 +62,48 @@
     </div>
 
 
-    <div id="app2">
+    <div id="app2" v-color="'red'" v-fontweight="100">
         {{ date | dateFormat("yyyy-mm-dd") }}
     </div>
     <script>
 
+        // 定义全局自定义指令
+        /* 
+            参数一 指令名称 不加 v-前缀,调用的时候才加
+            参数贰 是一个对象,有一些指令相关的函数,可以在特定阶段执行相关操作
+        */
+        Vue.directive("focous",{
+            /* 
+                全部方法的第一个参数都是 el 代表当前的元素,是一个 dom 元素
+             */
+            // 绑定的时候触发一次
+            // 在元素刚刚做了绑定的时候,还没插入到 dom中去,这个时候focus 方法就没有作用
+            // 因为一个元素只有插入 dom 之后才能获取焦点
+            // 样式有关的用 bind
+            bind : function(el){
+                el.focus();
+            },
+            // 插入的时候触发一次 行为有关的都用 insert
+            inserted : function(el){
+                el.focus();
+            },
+            // 更新的时候触发,触发多次
+            updated : function() {
+                
+            }
+        })
+        //自定义一个设置字体颜色的指令
+        Vue.directive("color",{
+            // 设置样式不需要插入 dom 就可以起作用
+            bind : function(el,binding){
+                el.style.color = binding.value;
+            
+            },
+        
+        })
+
         // 过滤器  方法第一个参数永远都是过滤器管道符号|前面的值
+        // 只能在 v-bind 和 插值表达式 中使用
         Vue.filter("dateFormat", function (date, pattern) {
             // 根据给定的时间字符串得到特定的时间
             var dt = new Date(date);
@@ -174,8 +210,18 @@
                         return `${year}-${mon}-${day}:${hour}:${min}:${ss}`;
                     }
                 }
+            },
+            //局部自定义指令
+            directives: {
+                "fontweight" : {
+                    bind : function(el,weight){
+                        el.style.fontWeight = weight.value;
+                    }
+                }
             }
         })
+
+        
 
     </script>
 </body>
