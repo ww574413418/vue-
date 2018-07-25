@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="修改msg" @click="msg = 'no hello'">
+        <p id="p1">{{msg}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el : "#app",
+            data : {
+                msg : "ok",
+            },
+            methods : {
+                show : function(){
+                    console.log("执行了show方法")
+                }
+            },
+            // 第一个生命周期函数 表示实例完全被创建之前会执行他
+            // 拿不到 data 和 methods中的属性和方法,因为没有被初始化
+            beforeCreate() {
+                console.log(this.msg);
+                
+            },
+            // 第二个生命周期函数 在这里对属性就行初始化
+            // 可以拿到 data 和 methods中的属性和方法,已经被初始化
+            created() {
+                this.msg = "hello"
+                console.log(this.msg);
+                this.show()
+            },
+            // 第三个生命周期函数,表示模板已经在内存中编译完成 还没渲染到页面中
+            // 获取不到页面中的需要被渲染的数据
+            beforeMount() {
+                console.log(document.getElementById("p1").innerText)
+            },
+            // 第四个生命周期方法,表示内存中的模板已经挂载到页面中
+            // mounted 是实例创建期间最后一个生命函数,执行完mounted表示实例完全创建好了
+            mounted() {
+                console.log(document.getElementById("p1").innerText)
+            },
+            
+            // 下面是运行中 生命方法
+
+            // 表示页面还没更新,但是数据已经被更新了
+            beforeUpdate() {
+                console.log("页面中的值："+ document.getElementById("p1").innerText)
+                console.log("data中的值："+ this.msg)
+            },
+            // 界面被更新
+            updated() {
+                console.log(this.msg)
+            },
+            
+            // 下面是销毁生命周期方法
+            beforeDestroy() {
+                
+            },
+            destroyed() {
+                
+            },
+        })
+    </script>
+</body>
+</html>
