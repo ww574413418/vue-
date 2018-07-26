@@ -83,27 +83,27 @@
             methods: {
                 add: function () {
                     this.$http.post("http://127.0.0.1:8080/add", {
-                        name : this.name,
+                        name: this.name,
                     },
-                    {
-                    // 设置内容格式,普通表单格式
-                    emulateJSON: true,
-                    }).then(
-                        function (result) {
-                            if(result.body.status === 0){
-                                // 刷新
-                                this.getAllList();
-                            }else{
-                                alter("添加失败")
+                        {
+                            // 设置内容格式,普通表单格式
+                            emulateJSON: true,
+                        }).then(
+                            function (result) {
+                                if (result.body.status === 0) {
+                                    // 刷新
+                                    this.getAllList();
+                                } else {
+                                    alter("添加失败")
+                                }
                             }
-                        }
-                    )
+                        )
                     this.name = this.id = "";
                 },
                 getAllList: function () {
                     this.$http.get("http://127.0.0.1:8080/getlist").then(
                         function (result) {
-                            var result = result.body;
+                            result = result.body;
                             if (result.status === 0) {
                                 this.list = result.message;
                             } else {
@@ -113,11 +113,11 @@
                     )
                 },
                 del: function (id) {
-                    this.$http.get("http://127.0.0.1:8080/delById/"+id).then(
-                        function(result){
-                            if(result.body.status === 0){
+                    this.$http.get("http://127.0.0.1:8080/delById/" + id).then(
+                        function (result) {
+                            if (result.body.status === 0) {
                                 this.getAllList();
-                            }else{
+                            } else {
                                 alert("删除失败");
                             }
                         }
@@ -149,7 +149,7 @@
                         var hour = dt.getHours();
                         var min = dt.getMinutes();
                         var ss = dt.getSeconds();
-                        return `${year}-${mon}-${day}:${hour}:${min}:${ss}`;
+                        return `${year}-${mon}-${day} ${hour}:${min}:${ss}`;
                     }
                 }
             },
