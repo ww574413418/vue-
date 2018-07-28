@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        // 组件名字中有大写要改成 '-小写'
+        <my-com1></my-com1>
+        <mycom2></mycom2>
+        <mycom3></mycom3>
+        <mycom4></mycom4>
+    </div>
+
+    <div id="app2">
+        <mycom4></mycom4>
+        <login></login>
+    </div>
+
+    // 定义组件的模板结构
+    <template id="tmpl">
+        <div>
+            <h1>通过 template 元素在外部创建的组件</h1>
+            <h4>好用</h4>
+        </div>
+    </template>
+
+
+    // 定义组件的模板结构
+    <template id="tmpl2">
+        <div>
+            <h1>通过 template 元素在外部创建的私有组件</h1>
+            <h4>私有</h4>
+        </div>
+    </template>
+
+    <script>
+        // 创建方式一
+        // 自定义全局组件
+        var coml = Vue.extend({
+            // 组件的 html结构
+            template: "<h3>这是Vue.extend 创建的组件</h3>"
+        })
+
+        // 创建组件模板对象
+        Vue.component("myCom1", coml)
+
+
+        // 创建方式二
+        Vue.component("mycom2", Vue.extend({
+            template: "<h3>这是Vue.extend 创建的组件</h3>"
+        }))
+
+        // 创建的方式三
+        Vue.component("mycom3", {
+            template: "<h3>这是Vue.component创建的组件</h3>",
+        })
+
+        // 注意: 只能有一个外标签 <div></div> 包裹 h3 span不然报错
+        Vue.component("mycom3", {
+            template: "<div><h3>这是Vue.component创建的组件</h3><span>123</span></div>",
+        })
+
+        // 方式四
+        Vue.component("mycom4", {
+            template: "#tmpl"
+        })
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            },
+        })
+
+        var vm = new Vue({
+            el: "#app2",
+            data: {
+
+            },
+            methods: {
+
+            },
+            // 过滤
+            filters: {
+
+            },
+            // 自定义指令
+            directives: {
+
+            },
+            // 组件
+            components: {
+                login: {
+                    template: "#tmpl2",
+                }
+            },
+            //生命周期函数
+            beforeCreate() {
+
+            },
+            created() {
+
+            },
+            beforeMount() {
+
+            },
+            mounted() {
+
+            }, beforeUpdate() {
+
+            },
+            updated() {
+
+            },
+            beforeDestroy() {
+
+            },
+            destroyed() {
+
+            }
+        })
+    </script>
+</body>
+
+</html>

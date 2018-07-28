@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <mycom1></mycom1>
+        <hr>
+        <mycom1></mycom1>
+    </div>
+
+    <template id="tmpl">
+        <div>
+            <h1>全局组件 --- {{msg}}</h1>
+            <input type="button" value="+1" @click="add1">
+            <h3>{{count}}</h3>
+        </div>
+
+    </template>
+
+    <script>
+
+        // 组件可以有自己的 data 
+        // 组件的 data 和实例的 data 不一样,实例可以为一个对象,而组件为一个方法,且要返回一个对象
+        Vue.component("mycom1", {
+            template: "#tmpl",
+            data: function () {
+                return {
+                    msg: "这只组件中的私有数据",
+                    count: 0,
+                };
+            },
+            methods: {
+                add1: function () {
+                     this.count += 1;
+                }
+            }
+        })
+
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>
