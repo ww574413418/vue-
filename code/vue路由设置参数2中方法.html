@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script src="./lib/vue-router-3.0.1.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 
+            可以这样给路由传递参数不需要修改路由规则的 path 属性   
+        -->
+        <router-link to="/login?id=10&name=tom" tag="span">登录</router-link>
+        <router-link to="/register" tag="span">注册</router-link>
+
+        <router-view></router-view>
+
+    </div>
+    
+
+    <template id="login">
+        <h1>登录组件 --- id:{{this.$route.query.id}} --- name:{{$route.query.name}}</h1>
+    </template>
+
+
+    <template id="register">
+        <h1>注册组件 --- id:{{this.$route.params.id}} --- name:{{this.$route.params.name}}</h1>
+    </template>
+
+    <script>
+        
+        var login = {
+            template : "#login",
+            // 组件钩子函数
+            created () {
+                console.log(this.$route);
+                console.log(this.$route.query.id);
+                console.log(this.$route.query.name);
+            },
+            data : function(){
+                return {
+                    msg : "hello"
+                }
+            }
+        }
+
+        var register = {
+            template : "#register",
+            created(){
+                console.log(this.$route);
+                console.log(this.$route.params.id);
+            }
+        }
+
+
+        var myrouter = new VueRouter({
+            routes : [
+                {path : "/login" ,component : login},
+                // 修改 path 属性传递参数
+                {path : "/register/:id/:name" ,component : register},
+            ]
+        })
+
+        var vm = new Vue({
+            el : "#app",
+            data : {
+
+            },
+            methods: {
+                
+            },
+            components: {
+                login : login,
+                register : register,
+            },
+            router : myrouter,
+        })
+    </script>
+</body>
+</html>

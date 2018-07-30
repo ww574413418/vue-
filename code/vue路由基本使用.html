@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script src="./lib/vue-router-3.0.1.js"></script>
+</head>
+
+<style>
+    /* 这是路由被选中样式 */
+
+    .router-link-active,
+    .mystyle {
+        color: red;
+        font-weight: 800px;
+        font-style: italic;
+        font-size: 80px;
+        text-decoration: underline;
+        background-color: greenyellow;
+    }
+
+    .v-enter,
+    .v-leave-to{
+        opacity: 0;
+        transform: translateX(140px),
+    }
+
+    .v-enter-active,
+    .v-leave-active{
+        transform: all 0.5s ease;
+    }
+</style>
+
+<body>
+    <div id="app">
+
+        <a href="#/login">登录</a>
+        <!-- 默认渲染为 a 标签 -->
+        <router-link to="/register" tag="span">注册</router-link>
+
+        <transition model="out-in">
+            <router-view></router-view>
+        </transition>
+
+
+    </div>
+
+    <template id="login">
+        <h1>登录组件</h1>
+    </template>
+
+    <template id="register">
+        <h1>注册组件</h1>
+    </template>
+
+    <script>
+
+        var login = {
+            template: "#login"
+        }
+
+        var register = {
+            template: "#register"
+        }
+
+        var index = {
+            template: "#index"
+        }
+
+        // 创建一个路由对象
+        // 可以在构造函数中传递一个配置对象
+        var routerObj = new VueRouter({
+            // 标识路由匹配规则
+            routes: [
+                // 每个路由规则都是一个对象,有2个必须有的属性
+                // path 标识监听哪个路由链接  
+                //component 表示对应展示的组件的对象,不能放组件的名称
+                // 这里的 redirect 是强制的展示某一个 path
+                { path: "/", redirect: "/login" },
+                // 浏览器地址访问/login 就会在 router-view 标签中加载对应的组件!!
+                { path: "/login", component: login },
+                { path: "/register", component: register },
+
+            ],
+            // 通过属性设置 路由被选中样式
+            linkActiveClass: "mystyle",
+        })
+
+        var vm = new Vue({
+            el: "#app",
+            data: {},
+            methods: {
+
+            },
+            components: {
+                login: login,
+                register: register,
+            },
+            // 将路由规则对象注册到 vue实例中
+            // 用来监听 url 地址的变化.展示不同的组件
+            router: routerObj,
+        })
+    </script>
+</body>
+
+</html>
