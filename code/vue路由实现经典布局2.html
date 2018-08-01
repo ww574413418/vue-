@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <script src="./lib/vue-router-3.0.1.js"></script>
+</head>
+<style>
+    html,body,h1{
+        margin: 0px;
+        padding: 0px;
+    }
+    .header{
+        height: 100px;
+        background-color: palegoldenrod;
+    }
+    .leftbox{
+        background-color: goldenrod;
+        height: 600px;
+        flex: 2;
+    }
+    .indexbox{
+        background-color:rebeccapurple;
+        height: 600px;
+        flex: 8;
+    }
+    .adminbox{
+        background-color: brown;
+        height: 600px;
+        flex: 8;
+    }
+    .userbox{
+        background-color: palegreen;
+        height: 600px;
+        flex: 8;
+    }
+    .container{
+        display: flex;
+    }
+</style>
+<body>
+    <div id="app">
+        <router-view></router-view>
+        <div class="container">
+            <leftbox @func="changeRouterName"></leftbox>
+            <router-view :name="routerviewname"></router-view>
+        </div>
+        
+        
+    </div>
+
+    <template id="header">
+        <h1 class="header">header</h1>
+    </template>
+
+    <template id="leftbox" >
+        <div class="leftbox">
+            <input type="button" value="indexbox" @click="getIndexbox('main')">
+            <input type="button" value="userbox" @click="getUserbox('userbox')">
+            <input type="button" value="adminbox" @click="getAdminbox('adminbox')">
+        </div>
+    </template>
+
+    <template id="mainbox">
+        <h1 class="indexbox">indexbox</h1>
+    </template>
+
+    <template id="userbox">
+        <h1 class="userbox">userbox</h1>
+    </template>
+
+    <template id="adminbox">
+        <h1 class="adminbox">adminbox</h1>
+    </template>
+
+    <script>
+
+        var header = {
+            template : "#header",
+        }
+
+        var left = {
+            template : "#leftbox",
+            methods : {
+                getUserbox : function(userbox){
+                    console.log(userbox);
+                    this.$emit("func",userbox);
+                },
+                getAdminbox : function(adminbox){
+                    console.log(adminbox);
+                    this.$emit("func",adminbox);
+                },
+                getIndexbox : function(main){
+                    console.log(main);
+                    this.$emit("func",main);
+                }
+            },
+        }
+
+        var main = {
+            template : "#mainbox",
+        }
+
+        var userbox = {
+            template : "#userbox",
+        }
+
+        var adminbox = {
+            template : "#adminbox"
+        }
+
+        var myroute = new VueRouter({
+            routes : [
+                {path : "/",components:{
+                    "default": header,
+                    "main" : main,
+                    "userbox" : userbox,
+                    "adminbox" : adminbox
+                }},
+            ]
+        })
+
+        var vm = new Vue({
+            el : "#app",
+            data : {
+                msg : "hello",
+                routerviewname : "userbox",
+            },
+            methods : {
+                changeRouterName : function(newValue){
+                    this.routerviewname = newValue;
+                }            
+            },
+            components : {
+                headebox : header,
+                leftbox : left,
+                userbox : userbox,
+                mainbox : main,
+                adminbox : adminbox,
+            },
+            router : myroute,
+            
+        })
+    </script>
+</body>
+</html>
